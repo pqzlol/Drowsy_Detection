@@ -1,0 +1,48 @@
+ #眼部状态识别
+ 1、data_collection.py采集数据
+  正样本：有地面实况眨眼（10346）
+  负样本：是从没有发生眨眼的视频部分采样的（3360）
+  count:13755
+ 2、train_EAR_SVM.py训练
+ 3、test_EAR_SVMFromFile.py测试ZJU眨眼数据集
+ 
+ 
+ # 使用面部检测+面部标志显示输出图像
+    #opencv默认的imread是以BGR的方式进行存储的,而matplotlib的imshow默认则是以RGB格式展示,所以此处我们必须对图片的通道进行转换
+    #origImg=frame
+#     origImg = cv2.cvtColor(origImg,cv2.COLOR_BGR2RGB)
+#     plt.subplot(121)
+#     plt.imshow(origImg)
+#     plt.xticks([])
+#     plt.yticks([])
+#     plt.title("Intput")
+#     frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+#     plt.subplot(122)
+#     plt.imshow(frame)
+#     plt.xticks([])
+#     plt.yticks([])
+#     plt.title("Output")
+#     plt.show()
+
+函数参数详解
+#图像锐化拉普拉斯算子
+ dst = cv2.Laplacian(image, -1)
+ #Laplacian(src, ddepth, dst, ksize, scale, delta, borderType)
+        #--src参数表示输入需要处理的图像
+        #--ddepth参数表示输出图像深度,ddepth =-1时，代表输出图像与输入图像相同的深度
+        #--dst参数表示输出与src相同大小和相同通道数的图像。
+        #--ksize参数表示用于计算二阶导数滤波器的孔径大小，大小必须是正数和奇数。默认值为1，此时采用3*3径孔[0,1,0],[1,-4,1],[0,1,0]
+        #--scale参数表示计算拉普拉斯算子值的比例因子，默认情况下没有伸缩系数。
+        #--delta参数表示一个可选的增量，将会加到最终的dst中，同样，默认情况下没有额外的值加到dst中。
+        #--borderType表示判断图像边界的模式。这个参数默认值为cv2.BORDER_DEFAULT。
+        
+        
+ #基于cascade级联harr的分类器多尺度检测人脸
+  rects = detector.detectMultiScale(gray, scaleFactor=1.1, 
+        minNeighbors=5, minSize=(30, 30),
+        flags=cv2.CASCADE_SCALE_IMAGE)
+        #detectMultiScale函数
+        #--scaleFactor--表示在前后两次相继的扫描中，搜索窗口的比例系数。默认为1.1即每次搜索窗口依次扩大10%;
+        #--minNeighbors--表示构成检测目标的相邻矩形的最小个数(默认为3个)。
+        #--flags--在新版的opencv是不需要的,暂时不管了
+        #--minSize--最小检测窗口大小
